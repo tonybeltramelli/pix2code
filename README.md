@@ -11,4 +11,4 @@
 Transforming a graphical user interface screenshot created by a designer into computer code is a typical task conducted by a developer in order to build customized software, websites and mobile applications. In this paper, we show that Deep Learning techniques can be leveraged to automatically generate code given a graphical user interface screenshot as input. Our model is able to generate code targeting three different platforms (i.e. iOS, Android and web-based technologies) from a single input image with over 77% of accuracy.
 
 ## Current status
-The datasets used for this research will be uploaded to this repository later this year, stay tuned.
+To foster future research, our datasets consisting of both GUI screenshots and associated source code for three different platforms (ios, android, web-based) will be made freely available on this repository later this year. Stay tuned!
