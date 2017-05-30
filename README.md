@@ -54,6 +54,13 @@ Any difference in length between the generated token sequence and the expected t
 ### How long does it take to train the model?
 On a Nvidia Tesla K80 GPU, it takes a little less than 5 hours to optimize the 109 * 10^6 parameters for one dataset; so expect around 15 hours if you want to train the model for the three target platforms.
 
+### I am a front-end developer, will I soon lose my job?
+*(I have genuinely been asked this question multiple times)*
+
+**TL;DR** Not anytime soon will AI replace front-end developers.
+
+Even assuming a mature version of pix2code able to generate GUI code with 100% accuracy for every platforms/languages in the universe, front-enders will still be needed to implement the logic, the interactive parts, the advanced graphics and animations, and all the features users love. The product we are building at [Uizard Technologies](https://uizard.io) is intended to bridge the gap between UI/UX designers and front-end developers, not replace any of them. We want to rethink the traditional workflow that too often results in more frustration than innovation. We want designers to be as creative as possible to better serve end users, and developers to dedicate their time programming the core functionalities and forget about repetitive tasks such as UI implementation. We believe in a future where AI collaborate with humans, not replace humans.
+
 ## Media coverage
 
 * [Wired UK](http://www.wired.co.uk/article/pix2code-ulzard-technologies)
