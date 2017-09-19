@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# www.tonybeltramelli.com
+
+# Handle arguments
+if [ $# -eq 0 ]
+    then
+	echo "Error: no arguments supplied"
+	echo "Usage:"
+	echo "	-i|--input <input image path>"
+	echo "	-t|--target <target platform (ios|android|web)>"
+	exit 1
+elif [ $# -ne 0 ]
+    then
+	for i in "$@"
+	do
+	    PARAM=`echo $1 | awk -F= '{print $1}'`
+	    VALUE=`echo $2 | sed 's/^[^=]*=//g'`
+	    case $PARAM in
+	        -i|--input)
+				INPUT=$VALUE
+				;;
+	        -t|--target)
+				TARGET=$VALUE
+				;;
+	    esac
+	    shift
+	done
+fi
+
+echo "Input image: $INPUT"
+echo "Target platform: $TARGET"
+
+base_path=${INPUT%/*}
+base_name=${INPUT##*/}
+file_name=${base_name%.*}
+
+rm -rf ../bin/pix2code.h5
+rm -rf ../bin/pix2code.json
+rm -rf ../bin/meta_dataset.npy
+rm -rf ../bin/words.vocab
+
+cp ../results/${TARGET}_results/pix2code.h5 ../bin/
+cp ../results/${TARGET}_results/pix2code.json ../bin/
+cp ../results/${TARGET}_results/meta_dataset.npy ../bin/
+cp ../results/${TARGET}_results/words.vocab ../bin/
+
+echo "Generating code with pre-trained model..."
+./sample.py $base_path $base_path $file_name &>/dev/null
+
+echo "Compiling output for target platform..."
+cd ../compiler
+
+if [ "$TARGET" == "ios" ]
+    then
+    ./ios-compiler.py $base_path/ $file_name
+elif [ "$TARGET" == "android" ]
+    then
+    ./android-compiler.py $base_path/ $file_name
+elif [ "$TARGET" == "web" ]
+    then
+    ./web-compiler.py $base_path/ $file_name
+fi
+
+echo "Code generated successfully"
