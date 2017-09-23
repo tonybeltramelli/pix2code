@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 
@@ -44,7 +45,7 @@ class Node:
         return nodes[0]
 
     def show(self, depth=0):
-        print " " * depth, self.key, self.value, self.level
+        print(" " * depth, self.key, self.value, self.level)
         for child in self.children:
             child.show(depth + 2)
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 import sys
@@ -13,8 +14,8 @@ if __name__ == "__main__":
     if length != 0:
         input_file = argv[0]
     else:
-        print "Error: not enough argument supplied:"
-        print "ios-compiler.py <input file>"
+        print("Error: not enough argument supplied:")
+        print("ios-compiler.py <input file>")
         exit(0)
 
 TEXT_PLACE_HOLDER = "[TEXT]"
