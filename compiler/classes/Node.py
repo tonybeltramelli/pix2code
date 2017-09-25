@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 
@@ -13,7 +14,7 @@ class Node:
         self.children.append(child)
 
     def show(self):
-        print self.key
+        print(self.key)
         for child in self.children:
             child.show()
 

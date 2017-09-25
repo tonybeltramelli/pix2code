@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 from keras.layers import Input, Dense, Dropout, \
@@ -6,8 +7,8 @@ from keras.layers import Input, Dense, Dropout, \
 from keras.models import Sequential, Model
 from keras.optimizers import RMSprop
 from keras import *
-from Config import *
-from AModel import *
+from .Config import *
+from .AModel import *
 
 
 class pix2code(AModel):

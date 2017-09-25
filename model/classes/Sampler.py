@@ -1,8 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
-from Vocabulary import *
-from BeamSearch import *
-from Utils import *
+from .Vocabulary import *
+from .BeamSearch import *
+from .Utils import *
 
 
 class Sampler:
@@ -13,9 +15,9 @@ class Sampler:
         self.input_shape = input_shape
         self.output_size = output_size
 
-        print "Vocabulary size: {}".format(self.voc.size)
-        print "Input shape: {}".format(self.input_shape)
-        print "Output size: {}".format(self.output_size)
+        print("Vocabulary size: {}".format(self.voc.size))
+        print("Input shape: {}".format(self.input_shape))
+        print("Output size: {}".format(self.output_size))
 
         self.context_length = context_length
 
@@ -30,7 +32,7 @@ class Sampler:
 
         for i in range(0, sequence_length):
             if verbose:
-                print "predicting {}/{}...".format(i, sequence_length)
+                print("predicting {}/{}...".format(i, sequence_length))
 
             probas = model.predict(input_img, np.array([current_context]))
             prediction = np.argmax(probas)

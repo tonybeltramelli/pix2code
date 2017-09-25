@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 import numpy as np
@@ -49,7 +50,7 @@ class Generator:
 
                     if sample_in_batch_counter == batch_size or (loop_only_one and i == len(gui_paths) - 1):
                         if verbose:
-                            print "Generating sparse vectors..."
+                            print("Generating sparse vectors...")
                         batch_next_words = Dataset.sparsify_labels(batch_next_words, voc)
                         if generate_binary_sequences:
                             batch_partial_sequences = Dataset.binarize(batch_partial_sequences, voc)
@@ -57,13 +58,13 @@ class Generator:
                             batch_partial_sequences = Dataset.indexify(batch_partial_sequences, voc)
 
                         if verbose:
-                            print "Convert arrays..."
+                            print("Convert arrays...")
                         batch_input_images = np.array(batch_input_images)
                         batch_partial_sequences = np.array(batch_partial_sequences)
                         batch_next_words = np.array(batch_next_words)
 
                         if verbose:
-                            print "Yield batch"
+                            print("Yield batch")
                         yield ([batch_input_images, batch_partial_sequences], batch_next_words)
 
                         batch_input_images = []

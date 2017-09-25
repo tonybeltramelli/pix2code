@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 import os
@@ -22,7 +23,7 @@ class Dataset:
 
     @staticmethod
     def load_paths_only(path):
-        print "Parsing data..."
+        print("Parsing data...")
         gui_paths = []
         img_paths = []
         for f in os.listdir(path):
@@ -42,7 +43,7 @@ class Dataset:
         return gui_paths, img_paths
 
     def load(self, path, generate_binary_sequences=False):
-        print "Loading data..."
+        print("Loading data...")
         for f in os.listdir(path):
             if f.find(".gui") != -1:
                 gui = open("{}/{}".format(path, f), 'r')
@@ -55,7 +56,7 @@ class Dataset:
                     img = np.load("{}/{}.npz".format(path, file_name))["features"]
                     self.append(file_name, gui, img)
 
-        print "Generating sparse vectors..."
+        print("Generating sparse vectors...")
         self.voc.create_binary_representation()
         self.next_words = self.sparsify_labels(self.next_words, self.voc)
         if generate_binary_sequences:
@@ -67,17 +68,17 @@ class Dataset:
         assert self.size == len(self.input_images) == len(self.partial_sequences) == len(self.next_words)
         assert self.voc.size == len(self.voc.vocabulary)
 
-        print "Dataset size: {}".format(self.size)
-        print "Vocabulary size: {}".format(self.voc.size)
+        print("Dataset size: {}".format(self.size))
+        print("Vocabulary size: {}".format(self.voc.size))
 
         self.input_shape = self.input_images[0].shape
         self.output_size = self.voc.size
 
-        print "Input shape: {}".format(self.input_shape)
-        print "Output size: {}".format(self.output_size)
+        print("Input shape: {}".format(self.input_shape))
+        print("Output size: {}".format(self.output_size))
 
     def convert_arrays(self):
-        print "Convert arrays..."
+        print("Convert arrays...")
         self.input_images = np.array(self.input_images)
         self.partial_sequences = np.array(self.partial_sequences)
         self.next_words = np.array(self.next_words)
