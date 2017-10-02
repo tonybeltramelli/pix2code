@@ -26,7 +26,7 @@ class Vocabulary:
             self.size += 1
 
     def create_binary_representation(self):
-        for key, value in self.vocabulary.iteritems():
+        for key, value in self.vocabulary.items():
             binary = np.zeros(self.size)
             binary[value] = 1
             self.binary_vocabulary[key] = binary
@@ -36,7 +36,7 @@ class Vocabulary:
             self.create_binary_representation()
 
         string = ""
-        for key, value in self.binary_vocabulary.iteritems():
+        for key, value in self.binary_vocabulary.items():
             array_as_string = np.array2string(value, separator=',', max_line_width=self.size * self.size)
             string += "{}{}{}\n".format(key, SEPARATOR, array_as_string[1:len(array_as_string) - 1])
         return string
