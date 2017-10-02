@@ -70,7 +70,7 @@ class pix2code(AModel):
         self.save()
 
     def predict(self, image, partial_caption):
-        return self.model.predict_proba([image, partial_caption], verbose=0)[0]
+        return self.model.predict([image, partial_caption], verbose=0)[0]
 
     def predict_batch(self, images, partial_captions):
-        return self.model.predict_proba([images, partial_captions], verbose=1)
+        return self.model.predict([images, partial_captions], verbose=1)
