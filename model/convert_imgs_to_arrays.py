@@ -7,8 +7,8 @@ import os
 import sys
 import shutil
 
-from .classes.Utils import *
-from .classes.model.Config import *
+from classes.Utils import *
+from classes.model.Config import *
 
 argv = sys.argv[1:]
 
