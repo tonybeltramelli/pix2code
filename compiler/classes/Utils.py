@@ -9,7 +9,7 @@ class Utils:
     def get_random_text(length_text=10, space_number=1, with_upper_case=True):
         results = []
         while len(results) < length_text:
-            char = random.choice(string.letters[:26])
+            char = random.choice(string.ascii_letters[:26])
             results.append(char)
         if with_upper_case:
             results[0] = results[0].upper()
@@ -32,7 +32,7 @@ class Utils:
         results = []
 
         while len(results) < length:
-            char = random.choice(string.digits + string.letters)
+            char = random.choice(string.digits + string.ascii_letters)
             results.append(char)
 
         results[3] = "-"
@@ -45,7 +45,7 @@ class Utils:
         results = []
 
         while len(results) < length:
-            char = random.choice(string.letters)
+            char = random.choice(string.ascii_letters)
             results.append(char)
 
         return ''.join(results)
