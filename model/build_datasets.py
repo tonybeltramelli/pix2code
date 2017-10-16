@@ -48,7 +48,12 @@ train_set = []
 
 hashes = []
 for path in paths:
-    with open("{}/{}.gui".format(input_path, path), 'r', encoding = 'utf-8') as f:
+    if sys.version_info >= (3,):
+        f = open("{}/{}.gui".format(input_path, path), 'r', encoding='utf-8')
+    else:
+        f = open("{}/{}.gui".format(input_path, path), 'r')
+
+    with f:
         chars = ""
         for line in f:
             chars += line

@@ -1,5 +1,6 @@
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
+import sys
 import numpy as np
 
 START_TOKEN = "<START>"
@@ -26,7 +27,11 @@ class Vocabulary:
             self.size += 1
 
     def create_binary_representation(self):
-        for key, value in self.vocabulary.items():
+        if sys.version_info >= (3,):
+            items = self.vocabulary.items()
+        else:
+            items = self.vocabulary.iteritems()
+        for key, value in items:
             binary = np.zeros(self.size)
             binary[value] = 1
             self.binary_vocabulary[key] = binary
@@ -36,7 +41,11 @@ class Vocabulary:
             self.create_binary_representation()
 
         string = ""
-        for key, value in self.binary_vocabulary.items():
+        if sys.version_info >= (3,):
+            items = self.binary_vocabulary.items()
+        else:
+            items = self.binary_vocabulary.iteritems()
+        for key, value in items:
             array_as_string = np.array2string(value, separator=',', max_line_width=self.size * self.size)
             string += "{}{}{}\n".format(key, SEPARATOR, array_as_string[1:len(array_as_string) - 1])
         return string
