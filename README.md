@@ -39,7 +39,7 @@ cd datasets
 zip -F pix2code_datasets.zip --out datasets.zip
 unzip datasets.zip
 
-cd model
+cd ../model
 
 # split training set and evaluation set while ensuring no training example in the evaluation set
 # usage: build_datasets.py <input path> <distribution (default: 6)>
