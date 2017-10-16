@@ -6,8 +6,8 @@ __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 import os
 import sys
 
-from .classes.Sampler import *
-from .classes.model.pix2code import *
+from classes.Sampler import *
+from classes.model.pix2code import *
 
 argv = sys.argv[1:]
 
