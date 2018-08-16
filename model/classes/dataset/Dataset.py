@@ -42,9 +42,17 @@ class Dataset:
         assert len(gui_paths) == len(img_paths)
         return gui_paths, img_paths
 
-    def load(self, path, generate_binary_sequences=False):
+    def load(self, path, generate_binary_sequences=False, data_percentage=1.0):
         print("Loading data...")
-        for f in os.listdir(path):
+        files_in_path = os.listdir(path)
+
+        if data_percentage != 1.0:
+            cut_files = int(len(files_in_path) * data_percentage)
+            if cut_files % 2 != 0:
+                cut_files += 1
+            files_in_path = sorted(files_in_path)[:cut_files]
+
+        for f in files_in_path:
             if f.find(".gui") != -1:
                 gui = open("{}/{}".format(path, f), 'r')
                 file_name = f[:f.find(".gui")]
