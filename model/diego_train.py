@@ -10,7 +10,7 @@ import json
 
 from classes.dataset.Generator import *
 from classes.model.pix2code import *
-from classes.model.pre_pix2code_1 import *
+from classes.model.shallow_pix2code import *
 from evaluation import calculate_set_levenshtein_distance
 
 
