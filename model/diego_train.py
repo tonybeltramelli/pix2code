@@ -30,7 +30,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
 
     steps_per_epoch = dataset.size / BATCH_SIZE
 
-    steps_per_epoch = 1 #steps_per_epoch if steps_per_epoch > 0 else 1
+    #steps_per_epoch = steps_per_epoch if steps_per_epoch > 0 else 1
 
     voc = Vocabulary()
     voc.retrieve(output_path)
