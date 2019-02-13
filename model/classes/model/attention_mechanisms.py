@@ -8,6 +8,8 @@ from keras.layers.core import *
 from keras.layers.recurrent import LSTM
 from keras.models import *
 
+from .Config import *
+
 INPUT_DIM = 2
 TIME_STEPS = 20
 # if True, the attention vector is shared across the input_dimensions where the attention is applied.
