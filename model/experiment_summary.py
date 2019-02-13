@@ -2,7 +2,7 @@ import sys
 import json
 import cufflinks
 
-import plotly.offline as po
+import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow as tf
 
@@ -16,30 +16,52 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 argv = sys.argv[1:]
 
 
-def plot_loss_function(model_name, data_percentage, loss_function_name='CrossEntropy'):
-    experiment_name = '{}_{}_model'.format(model_name, data_percentage)
-    loss_file_name = 'loss_outputs/loss_history_{}_model.json'.format(experiment_name)
-
-    with open(loss_file_name, 'r') as file:
-        loss = json.load(file)
-    loss = pd.DataFrame(loss)
-    layout = dict(xaxis=dict(title='epochs'), title='Loss through epochs',
-                  yaxis=dict(title=loss_function_name))
-    fig = loss.figure(layout=layout)
-    po.plot(fig, filename='plots/loss_{}.png'.format(experiment_name), auto_open=False)
+def open_experiment_data_file(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
 
 
-if len(argv) < 3:
-    print("Error: not enough argument supplied:")
-    print("generate.py <trained model name> <input image> <output path> <search method (default: greedy)>")
-    exit(0)
-else:
-    model_name = argv[0]
-    input_path = argv[1]
-    output_path = argv[2]
-    search_method = argv[3] or 'greedy'
-    data_percentage = argv[4]
-    plot_loss_function(model_name, data_percentage)
+def parse_experiment_data(metrics_as_df):
+    epochs = []
+    loss = []
+    levenshtein = []
+    for epoch, row in metrics_as_df.iterrows():
+        epochs.append(epoch)
+        loss.append(row['loss'])
+        levenshtein.append(row['lev_distance'])
+    return epochs, loss, levenshtein
+
+
+def plot_loss_function(loss_json_file):
+    loss_file_name = 'loss_outputs/{}'.format(loss_json_file)
+    metrics_as_dict = open_experiment_data_file(loss_file_name)
+    metrics_df = pd.DataFrame(metrics_as_dict)
+    epochs, loss, levenshtein = parse_experiment_data(metrics_df)
+    fig, ax1 = plt.subplots()
+
+    color = 'tab:red'
+    ax1.set_xlabel('epochs')
+    ax1.set_ylabel('crossentropy', color=color)
+    ax1.plot(epochs, loss, color=color)
+    ax1.tick_params(axis='y', labelcolor=color)
+
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+
+    color = 'tab:blue'
+    ax2.set_ylabel('Levenshtein distance',
+                   color=color)  # we already handled the x-label with ax1
+    ax2.plot(epochs, levenshtein, color=color)
+    ax2.tick_params(axis='y', labelcolor=color)
+
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    plt.savefig('plots/metrics_experiment_{}.png'.
+                format(loss_json_file.replace(".json", "")),
+                bbox_inches="tight")
+
+
+loss_json_file = argv[0]
+plot_loss_function(loss_json_file)
+print("ran all")
 
 # model = load_model(trained_model_name)
 # visual_input_shape = model.inputs[0].shape.as_list()
