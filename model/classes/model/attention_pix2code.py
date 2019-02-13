@@ -16,7 +16,7 @@ from .attention_mechanisms import attention_3d_block
 class attention_pix2code(AModel):
     def __init__(self, input_shape, output_size, output_path):
         AModel.__init__(self, input_shape, output_size, output_path)
-        self.name = "attention_pix2code"
+        self.name = "attention_first_lstm_pix2code"
 
         image_model = Sequential()
         image_model.add(Conv2D(32, (3, 3), padding='valid', activation='relu', input_shape=input_shape))
