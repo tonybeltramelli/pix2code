@@ -45,23 +45,17 @@ class attention_pix2code(AModel):
         visual_input = Input(shape=input_shape)
         encoded_image = image_model(visual_input)
 
-        language_model = Sequential()
-        language_model.add(LSTM(128, return_sequences=True, input_shape=(CONTEXT_LENGTH, output_size)))
-        language_model.add(LSTM(128, return_sequences=True))
-
         textual_input = Input(shape=(CONTEXT_LENGTH, output_size))
-        encoded_text = language_model(textual_input)
+        language_model = LSTM(128, return_sequences=True)(textual_input)
+        language_model = attention_3d_block(language_model)
+        encoded_text = LSTM(128, return_sequences=True)(language_model)
 
         decoder = concatenate([encoded_image, encoded_text])
 
         decoder = LSTM(512, return_sequences=True)(decoder)
-        attention = attention_3d_block(decoder)
-
         decoder = LSTM(512, return_sequences=False)(decoder)
 
-        attention_mul = Flatten()(attention)
-        decoder_attention = concatenate([decoder, attention_mul])
-        decoder = Dense(output_size, activation='softmax')(decoder_attention)
+        decoder = Dense(output_size, activation='softmax')(decoder)
 
         self.model = Model(inputs=[visual_input, textual_input], outputs=decoder)
 
