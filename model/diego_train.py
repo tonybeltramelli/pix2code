@@ -11,6 +11,7 @@ import json
 from classes.dataset.Generator import *
 from classes.model.pix2code import *
 from classes.model.shallow_pix2code import *
+from classes.model.attention_pix2code import attention_pix2code
 from evaluation import calculate_set_levenshtein_distance
 
 
@@ -39,6 +40,8 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
                                          generate_binary_sequences=True)
     if which_model == 'shallow':
         model = shallow_pix2code(input_shape, output_size, output_path)
+    elif which_model == 'attention':
+        model = attention_pix2code(input_shape, output_size, output_path)
     else:
         model = pix2code(input_shape, output_size, output_path)
 
@@ -54,6 +57,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
         loss_per_epoch.append(loss)
         snapshot_name = '{}_epoch_{}.h5'.format(experiment_name, epoch)
         model.model.save('saved_models/{}'.format(snapshot_name))
+
         lev_distance.append(calculate_set_levenshtein_distance(test_path,
                                                                output_path,
                                                                model.model))
