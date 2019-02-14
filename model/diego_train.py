@@ -40,6 +40,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
                                          generate_binary_sequences=True)
     if which_model == 'shallow':
         model = shallow_pix2code(input_shape, output_size, output_path)
+        model.model.load_weights('saved_models/b_shallow_pix2code_1.0_model_epoch_4.h5')
     elif which_model == 'attention':
         model = attention_pix2code(input_shape, output_size, output_path)
     else:
