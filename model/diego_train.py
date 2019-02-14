@@ -40,7 +40,6 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
                                          generate_binary_sequences=True)
     if which_model == 'shallow':
         model = shallow_pix2code(input_shape, output_size, output_path)
-        model.model.load_weights('saved_models/b_shallow_pix2code_1.0_model_epoch_4.h5')
     elif which_model == 'attention':
         model = attention_pix2code(input_shape, output_size, output_path)
     else:
@@ -48,7 +47,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
 
     loss_per_epoch = list()
     lev_distance = list()
-    experiment_name = '{}_{}_model'.format(model.name, data_percentage)
+    experiment_name = '{}_model'.format(model.name)
     loss_file_name = 'loss_outputs/loss_history_{}_model.json'.format(experiment_name)
     for epoch in range(epochs):
         callbacks = model.model.fit_generator(generator,
