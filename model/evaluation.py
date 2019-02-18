@@ -1,3 +1,5 @@
+from string import ascii_lowercase
+
 from keras.models import load_model
 from Levenshtein import distance
 
@@ -36,8 +38,20 @@ def read_image_input(image_path):
         return np.load(image_path)["features"]
 
 
+def token_char_mapping(vocab):
+    mapping = {}
+    sorted_ids = sorted(vocab.vocabulary.values())
+
+    for id_ in sorted_ids:
+        mapping[ascii_lowercase[id_]] = vocab.token_lookup[id_]
+
+    inverse_mapping = {v: k for k, v in mapping.items()}
+    return mapping, inverse_mapping
+
+
 def calculate_set_levenshtein_distance(test_path, output_path, model, verbose=False):
     gui_paths, img_paths, voc = load_dataset_and_vocabulary(test_path, output_path)
+    _, token_char_map = token_char_mapping(voc)
 
     sampler = Sampler(voc_path='../bin', output_size=19, context_length=CONTEXT_LENGTH)
 
@@ -54,7 +68,18 @@ def calculate_set_levenshtein_distance(test_path, output_path, model, verbose=Fa
                                            prediction_as_list=True)
         string_result = " ".join(result)
         string_token_sequence = " ".join(token_sequence)
-        prediction_distance = distance(string_result, string_token_sequence)
+
+        char_token_sequence = "".join(token_char_map[x]
+                                      for x in string_token_sequence.split())
+        char_result_sequence = "".join(token_char_map[x]
+                                       for x in string_result.split())
+
+        if i % 200 == 0:
+            print("here are some mappings")
+            print("target sequence ", char_token_sequence)
+            print("predicted sequence ", char_result_sequence)
+
+        prediction_distance = distance(char_result_sequence, char_token_sequence)
         if verbose:
             print("Levenshtein distance {}".format(prediction_distance))
 
