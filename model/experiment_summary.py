@@ -32,11 +32,13 @@ def parse_experiment_data(metrics_as_df):
     return epochs, loss, levenshtein
 
 
-def plot_loss_function(loss_json_file):
+def plot_loss_function(loss_json_file, epoch_start_offset):
+    epoch_start_offset = int(epoch_start_offset)
     loss_file_name = 'loss_outputs/{}'.format(loss_json_file)
     metrics_as_dict = open_experiment_data_file(loss_file_name)
     metrics_df = pd.DataFrame(metrics_as_dict)
     epochs, loss, levenshtein = parse_experiment_data(metrics_df)
+    epochs, loss, levenshtein = epochs[epoch_start_offset:], loss[epoch_start_offset:], levenshtein[epoch_start_offset:]
     fig, ax1 = plt.subplots()
 
     color = 'tab:red'
@@ -60,7 +62,8 @@ def plot_loss_function(loss_json_file):
 
 
 loss_json_file = argv[0]
-plot_loss_function(loss_json_file)
+epoch_start_offset = argv[1]
+plot_loss_function(loss_json_file, epoch_start_offset)
 print("ran all")
 
 # model = load_model(trained_model_name)
