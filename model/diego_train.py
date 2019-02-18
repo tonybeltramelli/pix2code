@@ -72,7 +72,7 @@ if __name__ == "__main__":
     if len(argv) < 2:
         print("Error: not enough argument supplied:")
         print("train.py <input path> <output path> "
-              "<shallow or pix2code> <epochs> <data_percentage>")
+              "<shallow or pix2code or attention > <epochs> <data_percentage>")
         exit(0)
     else:
         input_path = argv[0]
