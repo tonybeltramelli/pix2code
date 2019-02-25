@@ -51,7 +51,8 @@ class shallow_pix2code(AModel):
         self.model = Model(inputs=[visual_input, textual_input], outputs=decoder)
 
         optimizer = RMSprop(lr=0.0001, clipvalue=1.0)
-        self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+        self.model.compile(loss='categorical_crossentropy', metrics=['accuracy'],
+                           optimizer=optimizer)
 
     def fit(self, images, partial_captions, next_words):
         self.model.fit([images, partial_captions], next_words, shuffle=False, epochs=EPOCHS, batch_size=BATCH_SIZE, verbose=1)
