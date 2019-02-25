@@ -15,7 +15,7 @@ from classes.model.attention_pix2code import attention_pix2code
 from evaluation import calculate_set_levenshtein_distance
 
 
-def run(input_path, output_path, which_model, epochs, data_percentage, test_path):
+def run(input_path, output_path, which_model, epochs, data_percentage, val_path):
     np.random.seed(1234)
 
     dataset = Dataset()
@@ -130,6 +130,6 @@ if __name__ == "__main__":
             raise ValueError("model choice should be either 'shallow' or 'pix2code")
         epochs = int(argv[3]) if len(argv) > 2 else 20
         data_percentage = float(argv[4]) if len(argv) > 3 else 1.0
-        test_path = argv[5]
+        val_path = argv[5]
 
-    run(input_path, output_path, which_model, epochs, data_percentage, test_path)
+    run(input_path, output_path, which_model, epochs, data_percentage, val_path)
