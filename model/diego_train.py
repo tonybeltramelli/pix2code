@@ -123,7 +123,7 @@ if __name__ == "__main__":
         which_model = argv[2]
         if which_model not in ['shallow', 'pix2code', 'attention']:
             raise ValueError("model choice should be either 'shallow' or 'pix2code")
-        epochs = int(argv[3]) if len(argv) > 2 else 10
+        epochs = int(argv[3]) if len(argv) > 2 else 20
         data_percentage = float(argv[4]) if len(argv) > 3 else 1.0
         test_path = argv[5]
 
