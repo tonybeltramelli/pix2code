@@ -56,8 +56,8 @@ def plot_loss_function(loss_json_file, epoch_start_offset):
     ax2.tick_params(axis='y', labelcolor=color)
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    plt.savefig('plots/metrics_experiment_{}.png'.
-                format(loss_json_file.replace(".json", "")),
+    plt.savefig('plots/metrics_experiment_{}_{}_epochs.png'.
+                format(loss_json_file.replace(".json", ""), epoch_start_offset),
                 bbox_inches="tight")
 
 
