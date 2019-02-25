@@ -113,7 +113,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, val_path)
                 'val_accuracy': val_acc_per_epoch
             }, file_)
 
-        if epoch % 5 == 0 and epoch > 0:
+        if epoch % 5 == 0 and epoch > 5:
             model.model.save('saved_models/{}'.format(snapshot_name))
 
 
