@@ -56,7 +56,7 @@ def calculate_set_levenshtein_distance(test_path, output_path, model, verbose=Fa
     sampler = Sampler(voc_path='../bin', output_size=19, context_length=CONTEXT_LENGTH)
 
     set_average_distance = 0
-    for i in range(0, len(gui_paths))[:3]:
+    for i in range(0, len(gui_paths)):
         image_path = img_paths[i]
         img = read_image_input(image_path)
 
