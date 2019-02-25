@@ -31,13 +31,32 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
 
     steps_per_epoch = dataset.size / BATCH_SIZE
 
-    #steps_per_epoch = steps_per_epoch if steps_per_epoch > 0 else 1
-
     voc = Vocabulary()
     voc.retrieve(output_path)
 
     generator = Generator.data_generator(voc, gui_paths, img_paths, batch_size=BATCH_SIZE,
                                          generate_binary_sequences=True)
+
+    val_dataset = Dataset()
+    val_dataset.load(val_path, generate_binary_sequences=True,
+                     data_percentage=data_percentage)
+    val_dataset.save_metadata(output_path)
+    val_dataset.voc.save(output_path)
+
+    val_gui_paths, val_img_paths = Dataset.load_paths_only(val_path)
+
+    val_input_shape = val_dataset.input_shape
+    val_output_size = val_dataset.output_size
+
+    val_steps_per_epoch = val_dataset.size / BATCH_SIZE
+
+    val_voc = Vocabulary()
+    val_voc.retrieve(output_path)
+
+    val_generator = Generator.data_generator(val_voc, val_gui_paths, val_img_paths,
+                                             batch_size=BATCH_SIZE,
+                                             generate_binary_sequences=True)
+
     if which_model == 'shallow':
         model = shallow_pix2code(input_shape, output_size, output_path)
     elif which_model == 'attention':
@@ -45,25 +64,49 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
     else:
         model = pix2code(input_shape, output_size, output_path)
 
-    loss_per_epoch = list()
-    lev_distance = list()
+    train_loss_per_epoch = list()
+    val_loss_per_epoch = list()
+    train_lev_distance = list()
+    val_lev_distance = list()
+    train_acc_per_epoch = list()
+    val_acc_per_epoch = list()
+
     experiment_name = '{}_model'.format(model.name)
     loss_file_name = 'loss_outputs/loss_history_{}_model.json'.format(experiment_name)
     for epoch in range(epochs):
-        callbacks = model.model.fit_generator(generator,
-                                              steps_per_epoch=steps_per_epoch,
-                                              epochs=1)
+        callbacks = model.model.fit_generator(generator, callbacks=[checkpoint],
+                                              steps_per_epoch=steps_per_epoch, epochs=1,
+                                              validation_data=val_generator,
+                                              validation_steps=val_steps_per_epoch)
         loss = callbacks.history['loss'][0]
-        loss_per_epoch.append(loss)
+        acc = callbacks.history['acc'][0]
+        val_loss = callbacks.history['val_loss'][0]
+        val_acc = callbacks.history['val_acc'][0]
+
+        train_loss_per_epoch.append(loss)
+        val_loss_per_epoch.append(val_loss)
+
+        train_acc_per_epoch.append(acc)
+        val_acc_per_epoch.append(val_acc)
         snapshot_name = '{}_epoch_{}.h5'.format(experiment_name, epoch)
-        model.model.save('saved_models/{}'.format(snapshot_name))
 
-        lev_distance.append(calculate_set_levenshtein_distance(test_path,
-                                                               output_path,
-                                                               model.model))
+        train_lev_distance.append(calculate_set_levenshtein_distance(input_path,
+                                                                     output_path,
+                                                                     model.model))
 
-        with open(loss_file_name, 'w') as file:
-            json.dump({"loss": loss_per_epoch, 'lev_distance': lev_distance}, file)
+        val_lev_distance.append(calculate_set_levenshtein_distance(test_path,
+                                                                   output_path,
+                                                                   model.model))
+
+        with open(loss_file_name, 'w') as file_:
+            json.dump({
+                "train_loss": train_loss_per_epoch,
+                'train_lev_distance': train_lev_distance, "val_loss": val_loss_per_epoch,
+                'val_lev_distance': val_lev_distance, 'train_accuracy': train_acc_per_epoch,
+                'val_accuracy': val_acc_per_epoch
+            }, file_)
+
+    model.model.save('saved_models/{}'.format(snapshot_name))
 
 
 if __name__ == "__main__":
