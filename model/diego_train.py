@@ -101,7 +101,7 @@ def run(input_path, output_path, which_model, epochs, data_percentage, val_path)
                                                                      output_path,
                                                                      model.model))
 
-        val_lev_distance.append(calculate_set_levenshtein_distance(test_path,
+        val_lev_distance.append(calculate_set_levenshtein_distance(val_path,
                                                                    output_path,
                                                                    model.model))
 
