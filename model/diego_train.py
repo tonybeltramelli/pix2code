@@ -73,6 +73,11 @@ def run(input_path, output_path, which_model, epochs, data_percentage, test_path
 
     experiment_name = '{}_model'.format(model.name)
     loss_file_name = 'loss_outputs/loss_history_{}_model.json'.format(experiment_name)
+    file_prepath = "model-{}".format(model.name)
+
+    filepath = file_prepath + "epoch-{epoch:02d}-val-{val_loss:.2f}.hdf5"
+    checkpoint = ModelCheckpoint(filepath, monitor='val_loss',
+                                 verbose=1, save_best_only=True)
     for epoch in range(epochs):
         callbacks = model.model.fit_generator(generator, callbacks=[checkpoint],
                                               steps_per_epoch=steps_per_epoch, epochs=1,
