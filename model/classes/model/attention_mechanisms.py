@@ -73,7 +73,6 @@ def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
 
 def attention_3d_block(inputs):
     # inputs.shape = (batch_size, time_steps, input_dim)
-    input_dim = 512
     a = Permute((2, 1))(inputs)
     a = Dense(CONTEXT_LENGTH, activation='softmax')(a)
     a_probs = Permute((2, 1), name='attention_vec')(a)
