@@ -9,6 +9,8 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 import sys
 import json
 
+from keras.callbacks import ModelCheckpoint
+
 from classes.dataset.Generator import *
 from classes.model.pix2code import *
 
