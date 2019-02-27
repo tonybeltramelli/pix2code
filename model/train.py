@@ -82,7 +82,7 @@ def run(input_path, output_path, val_path, is_memory_intensive=False,
     else:
         print("must print this! ASDFSFASDFA")
         for _ in range(25):
-            model.fit_generator(generator, callbacks=[checkpoint],
+            model.model.fit_generator(generator, callbacks=[checkpoint],
                                 steps_per_epoch=steps_per_epoch, epochs=1,
                                 validation_data=val_generator,
                                 validation_steps=val_steps_per_epoch)
