@@ -13,6 +13,8 @@ from keras.callbacks import ModelCheckpoint
 
 from classes.dataset.Generator import *
 from classes.model.pix2code import *
+from classes.model.shallow_pix2code import *
+from classes.model.attention_pix2code import attention_pix2code
 
 
 def run(input_path, output_path, val_path, is_memory_intensive=False,
@@ -58,8 +60,12 @@ def run(input_path, output_path, val_path, is_memory_intensive=False,
                                                  batch_size=BATCH_SIZE,
                                                  generate_binary_sequences=True)
 
-
-    model = pix2code(input_shape, output_size, output_path)
+    if which_model == 'shallow':
+        model = shallow_pix2code(input_shape, output_size, output_path)
+    elif which_model == 'attention':
+        model = attention_pix2code(input_shape, output_size, output_path)
+    else:
+        model = pix2code(input_shape, output_size, output_path)
 
     if pretrained_model is not None:
         model.model.load_weights(pretrained_model)
@@ -82,7 +88,7 @@ def run(input_path, output_path, val_path, is_memory_intensive=False,
     else:
         print("must print this! ASDFSFASDFA")
         for _ in range(25):
-            model.model.fit_generator(generator, callbacks=[checkpoint],
+            callbacks = model.model.fit_generator(generator, callbacks=[checkpoint],
                                 steps_per_epoch=steps_per_epoch, epochs=1,
                                 validation_data=val_generator,
                                 validation_steps=val_steps_per_epoch)
@@ -127,7 +133,10 @@ if __name__ == "__main__":
         input_path = argv[0]
         output_path = argv[1]
         val_path = argv[2]
-        use_generator = False if len(argv) < 4 else True if int(argv[3]) == 1 else False
-        pretrained_weigths = None if len(argv) < 5 else argv[4]
+        which_model = argv[3]
+        if which_model not in ['shallow', 'pix2code', 'attention']:
+            raise ValueError("model choice should be either 'shallow' or 'pix2code")
+        use_generator = True if int(argv[4]) == 1 else False
+        pretrained_weigths = None if len(argv) < 6 else argv[5]
 
     run(input_path, output_path, val_path, is_memory_intensive=use_generator, pretrained_model=pretrained_weigths)
