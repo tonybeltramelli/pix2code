@@ -88,7 +88,7 @@ def run(input_path, output_path, val_path, is_memory_intensive=False,
         model.fit(dataset.input_images, dataset.partial_sequences, dataset.next_words)
     else:
         print("must print this! ASDFSFASDFA")
-        for _ in range(25):
+        for epoch in range(25):
             callbacks = model.model.fit_generator(generator, callbacks=[checkpoint],
                                 steps_per_epoch=steps_per_epoch, epochs=1,
                                 validation_data=val_generator,
