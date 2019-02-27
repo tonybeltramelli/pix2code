@@ -23,8 +23,7 @@ def run(input_path, output_path, val_path, is_memory_intensive=False,
     dataset.voc.save(output_path)
 
     val_dataset = Dataset()
-    val_dataset.load(val_path, generate_binary_sequences=True,
-                     data_percentage=data_percentage)
+    val_dataset.load(val_path, generate_binary_sequences=True)
     val_dataset.save_metadata(output_path)
     val_dataset.voc.save(output_path)
 
