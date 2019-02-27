@@ -15,6 +15,7 @@ from classes.dataset.Generator import *
 from classes.model.pix2code import *
 from classes.model.shallow_pix2code import *
 from classes.model.attention_pix2code import attention_pix2code
+from evaluation import calculate_set_levenshtein_distance
 
 
 def run(input_path, output_path, val_path, is_memory_intensive=False,
