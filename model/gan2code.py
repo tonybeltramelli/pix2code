@@ -88,7 +88,7 @@ generator_model = Model(g_input,g_V)
 generator_model.compile(loss='binary_crossentropy', optimizer=opt)
 
 
-d_input = Input(shape=(256,256,3))
+d_input = Input(shape=(128,128,3))
 H = Convolution2D(32, (3, 3), padding='same', activation='relu')(d_input)
 H = LeakyReLU(0.2)(H)
 H = Dropout(dropout_rate)(H)
@@ -120,16 +120,21 @@ GAN.compile(loss='categorical_crossentropy', optimizer=opt)
 #print(generated_images.shape)
 
 
-for e in tqdm(range(nb_epoch)):
+for e in tqdm(range(3)):
     # Make generative images
-    image_batch = X_train[np.random.randint(0,X_train.shape[0],size=BATCH_SIZE),:,:,:]
     X_y, y_1 = next(generator)
     Xtrain, ytrain = X_y[0], X_y[1]
+    resized = []
+    for udx, img in enumerate(Xtrain):
+        n_img = cv2.resize(img,(128, 128))
+        resized.append(n_img)
+
+    resized = np.array(resized)
     noise_gen = np.random.uniform(0,1,size=[4,4])
     generated_images = generator_model.predict(noise_gen)
     
     # Train discriminator on generated images
-    X = np.concatenate((Xtrain[:2,:,:,:], generated_images[:2,:,:,:]))
+    X = np.concatenate((resized[:2,:,:,:], generated_images[:2,:,:,:]))
     n = 2
     y = np.zeros([2*n,2])
     y[:n,1] = 1
