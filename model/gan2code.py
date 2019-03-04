@@ -145,7 +145,7 @@ GAN.compile(loss='categorical_crossentropy', optimizer=opt)
 #print(generated_images.shape)
 
 losses = {"d":[], "g":[]}
-plt_frq = 25
+plt_frq = 50
 for e in tqdm(range(100)):
     print("Epoch nb {}".format(e))
     # Make generative images
@@ -181,6 +181,8 @@ for e in tqdm(range(100)):
 
     # Updates plots
     if e%plt_frq==plt_frq-1:
+        plt.imshow(generated_images[0])
+        plt.savefig("generated_ex_epoch_{}.png".format(e), bbox_inches="tight")
         print("losses g {}".format(losses['g']))
         print("losses d {}".format(losses['d']))
 
