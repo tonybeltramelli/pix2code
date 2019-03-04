@@ -5,6 +5,8 @@ import tensorflow as tf
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
 import sys
+import cv2
+
 from keras.layers import Permute, Dense, Lambda, RepeatVector, merge
 from keras.optimizers import Adam
 from keras.layers import Input, Dense, Activation, BatchNormalization, UpSampling2D, Convolution2D, LeakyReLU, Flatten, Dropout, Reshape
