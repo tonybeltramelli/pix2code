@@ -6,6 +6,7 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
 import sys
 import cv2
+import matplotlib.pyplot as plt
 
 from keras.layers import Permute, Dense, Lambda, RepeatVector, merge
 from keras.optimizers import Adam
@@ -15,6 +16,29 @@ from keras.models import Model
 from tqdm import tqdm
 
 from classes.dataset.Generator import *
+
+def plot_gen(n_ex=16,dim=(4,4), figsize=(10,10) ):
+    noise = np.random.uniform(0,1,size=[n_ex,100])
+    generated_images = generator.predict(noise)
+
+    plt.figure(figsize=figsize)
+    for i in range(generated_images.shape[0]):
+        plt.subplot(dim[0],dim[1],i+1)
+        img = generated_images[i,0,:,:]
+        plt.imshow(img)
+        plt.axis('off')
+    plt.tight_layout()
+    plt.show()
+
+def plot_loss(losses):
+        display.clear_output(wait=True)
+        display.display(plt.gcf())
+        plt.figure(figsize=(10,8))
+        plt.plot(losses["d"], label='discriminitive loss')
+        plt.plot(losses["g"], label='generative loss')
+        plt.legend()
+        plt.show()
+
 
 input_path = "../datasets/web/training_features"
 val_path = "../datasets/web/eval_set/"
@@ -122,7 +146,7 @@ GAN.compile(loss='categorical_crossentropy', optimizer=opt)
 
 losses = {"d":[], "g":[]}
 plt_frq = 25
-for e in tqdm(range(3)):
+for e in tqdm(range(100)):
     # Make generative images
     X_y, y_1 = next(generator)
     Xtrain, ytrain = X_y[0], X_y[1]
@@ -151,10 +175,13 @@ for e in tqdm(range(3)):
     y2 = np.zeros([4,2])
     y2[:,1] = 1
     make_trainable(discriminator,False)
-    g_loss = GAN.train_on_batch(noise_tr, y2 )
+    g_loss = GAN.train_on_batch(noise_tr, y2)
     losses["g"].append(g_loss)
 
     # Updates plots
     if e%plt_frq==plt_frq-1:
         plot_loss(losses)
         plot_gen()
+
+GAN.save("Gan.h5")
+print("FINISHED!!")
