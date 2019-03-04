@@ -10,6 +10,8 @@ from keras.optimizers import Adam
 from keras.layers import Input, Dense, Activation, BatchNormalization, UpSampling2D, Convolution2D, LeakyReLU, Flatten, Dropout, Reshape
 from keras.models import Model
 
+from tqdm import tqdm
+
 from classes.dataset.Generator import *
 
 input_path = "../datasets/web/training_features"
