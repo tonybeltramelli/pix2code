@@ -120,7 +120,7 @@ GAN.compile(loss='categorical_crossentropy', optimizer=opt)
 
 #print(generated_images.shape)
 
-
+losses = {"d":[], "g":[]}
 for e in tqdm(range(3)):
     # Make generative images
     X_y, y_1 = next(generator)
