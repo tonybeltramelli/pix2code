@@ -147,6 +147,7 @@ GAN.compile(loss='categorical_crossentropy', optimizer=opt)
 losses = {"d":[], "g":[]}
 plt_frq = 25
 for e in tqdm(range(100)):
+    print("Epoch nb {}".format(e))
     # Make generative images
     X_y, y_1 = next(generator)
     Xtrain, ytrain = X_y[0], X_y[1]
@@ -180,8 +181,8 @@ for e in tqdm(range(100)):
 
     # Updates plots
     if e%plt_frq==plt_frq-1:
-        plot_loss(losses)
-        plot_gen()
+        print("losses g {}".format(losses['g']))
+        print("losses d {}".format(losses['d']))
 
 GAN.save("Gan.h5")
 print("FINISHED!!")
