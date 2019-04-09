@@ -7,12 +7,9 @@ import pandas as pd
 import tensorflow as tf
 
 
-from keras.models import load_model
-
 from classes.dataset.Generator import *
 from classes.diego_sampler import *
 
-sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 argv = sys.argv[1:]
 
 
@@ -23,13 +20,23 @@ def open_experiment_data_file(file_path):
 
 def parse_experiment_data(metrics_as_df):
     epochs = []
-    loss = []
-    levenshtein = []
+    train_loss = []
+    train_levenshtein = []
+    train_acc = []
+    val_loss = []
+    val_levenshtein = []
+    val_acc = []
     for epoch, row in metrics_as_df.iterrows():
         epochs.append(epoch)
-        loss.append(row['loss'])
-        levenshtein.append(row['lev_distance'])
-    return epochs, loss, levenshtein
+        train_loss.append(row['train_loss'])
+        train_levenshtein.append(row['train_lev_distance'])
+        train_acc.append(row['train_accuracy'])
+        val_loss.append(row['val_loss'])
+        val_levenshtein.append(row['val_lev_distance'])
+        val_acc.append(row['val_accuracy'])
+
+    return epochs, (train_loss, train_levenshtein, train_acc),\
+        (val_loss, val_levenshtein, val_acc)
 
 
 def plot_loss_function(loss_json_file, epoch_start_offset):
@@ -59,18 +66,55 @@ def plot_loss_function(loss_json_file, epoch_start_offset):
     plt.savefig('plots/metrics_experiment_{}_{}_epochs.png'.
                 format(loss_json_file.replace(".json", ""), epoch_start_offset),
                 bbox_inches="tight")
+    return
+
+
+def create_model_metrics_plot(loss_json_file, epoch_start_offset=0):
+    epoch_start_offset = int(epoch_start_offset)
+    loss_file_name = 'loss_outputs/{}'.format(loss_json_file)
+
+    metrics_as_dict = open_experiment_data_file(loss_file_name)
+    metrics_df = pd.DataFrame(metrics_as_dict)
+    epochs, train_metrics, val_metrics = parse_experiment_data(metrics_df)
+
+    train_loss, train_levenshtein, train_acc = train_metrics
+    val_loss, val_levenshtein, val_acc = val_metrics
+    epochs, train_loss, train_levenshtein, train_acc =\
+        epochs[epoch_start_offset:], train_loss[epoch_start_offset:],\
+        train_levenshtein[epoch_start_offset:], train_acc[epoch_start_offset:]
+    val_loss, val_levenshtein, val_acc = \
+        val_loss[epoch_start_offset:], val_levenshtein[epoch_start_offset:],\
+        val_acc[epoch_start_offset:]
+
+    fig, axes = plt.subplots(3, 2, sharey='row')
+    axes[0,0].set_title('Entrenamiento')
+    axes[0,1].set_title('Prueba')
+    axes[0,0].plot(epochs, train_loss)
+    axes[0,0].set_ylabel('Entropia Cruzada')
+    axes[0,1].plot(epochs, val_loss)
+    axes[1,0].plot(epochs, train_acc)
+    axes[1,0].set_ylabel('Precision')
+    axes[1,1].plot(epochs, val_acc)
+    axes[2,0].plot(epochs, train_levenshtein)
+    axes[2,0].set_xlabel('Epochs')
+    axes[2,0].set_ylabel('Levenshtein')
+    axes[2,1].plot(epochs, val_levenshtein)
+    axes[2,1].set_xlabel('Epochs')
+
+    model_name = r"""con atenci$\'o$n""" if "attention" in loss_json_file \
+        else "poco profundo"
+    if ("attention" not in loss_json_file) and ("shallow" not in loss_json_file):
+        model_name = "original"
+
+    fig.suptitle('Metricas modelo {}'.format(model_name), fontsize=16)
+
+    plt.savefig('plots/metrics_experiment_{}_{}_epochs.png'.
+                format(loss_json_file.replace(".json", ""), epoch_start_offset),
+                bbox_inches="tight")
+    return
 
 
 loss_json_file = argv[0]
 epoch_start_offset = argv[1]
-plot_loss_function(loss_json_file, epoch_start_offset)
-print("ran all")
-
-# model = load_model(trained_model_name)
-# visual_input_shape = model.inputs[0].shape.as_list()
-# sequence_input_shape = model.inputs[1].shape.as_list()
-#
-# sampler = Sampler(voc_path='../bin', output_size=output_size,
-#                   context_length=CONTEXT_LENGTH)
-
-
+create_model_metrics_plot(loss_json_file, epoch_start_offset)
+print("created")
