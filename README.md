@@ -8,7 +8,7 @@
 * Official research page: [https://uizard.io/research#pix2code](https://uizard.io/research#pix2code)
 
 ## Abstract
-Transforming a graphical user interface screenshot created by a designer into computer code is a typical task conducted by a developer in order to build customized software, websites, and mobile applications. In this paper, we show that deep learning methods can be leveraged to train a model end-to-end to automatically generate code from a single input image with over 77% of accuracy for three different platforms (i.e. iOS, Android and web-based technologies).
+Transforming a graphical user interface screenshot created by a designer into computer code is a typical task conducted by a developer in order to build customized software, websites, and mobile applications. In this paper, we show that deep learning methods can be leveraged to train a model end-to-end to automatically generate code from a single input image with over 77% of accuracy for three different platforms (i.e. iOS, Android, and web-based technologies).
 
 ## Citation
 
@@ -59,7 +59,7 @@ cd ../model
 ./build_datasets.py ../datasets/android/all_data
 ./build_datasets.py ../datasets/web/all_data
 
-# transform images (normalized pixel values and resized pictures) in training dataset to numpy arrays (smaller files if you need to upload the set to train your model in the cloud)
+# transform images (normalized pixel values and resized pictures) in training dataset to NumPy arrays (smaller files if you need to upload the set to train your model in the cloud)
 # usage: convert_imgs_to_arrays.py <input path> <output path>
 ./convert_imgs_to_arrays.py ../datasets/ios/training_set ../datasets/ios/training_features
 ./convert_imgs_to_arrays.py ../datasets/android/training_set ../datasets/android/training_features
@@ -78,10 +78,10 @@ cd model
 # train on images pre-processed as arrays
 ./train.py ../datasets/web/training_features ../bin
 
-# train with generator to avoid having to fit all the data in memory (RECOMMENDED)
+# train with a generator to avoid having to fit all the data in memory (RECOMMENDED)
 ./train.py ../datasets/web/training_features ../bin 1
 
-# train on top of pretrained weights
+# train on top of pre-trained weights
 ./train.py ../datasets/web/training_features ../bin 1 ../bin/pix2code.h5
 ```
 
@@ -94,7 +94,7 @@ cd model
 # usage: generate.py <trained weights path> <trained model name> <input image> <output path> <search method (default: greedy)>
 ./generate.py ../bin pix2code ../gui_screenshots ../code
 
-# equivalent to command above
+# equivalent to the command above
 ./generate.py ../bin pix2code ../gui_screenshots ../code greedy
 
 # generate DSL code with beam search and a beam width of size 3
@@ -110,7 +110,7 @@ cd model
 # usage: sample.py <trained weights path> <trained model name> <input image> <output path> <search method (default: greedy)>
 ./sample.py ../bin pix2code ../test_gui.png ../code
 
-# equivalent to command above
+# equivalent to the command above
 ./sample.py ../bin pix2code ../test_gui.png ../code greedy
 
 # generate DSL code with beam search and a beam width of size 3
@@ -133,7 +133,7 @@ cd compiler
 
 ## FAQ
 
-### Will pix2code supports other target platforms/languages?
+### Will pix2code support other target platforms/languages?
 No, pix2code is only a research project and will stay in the state described in the paper for consistency reasons.
 This project is really just a toy example but you are of course more than welcome to fork the repo and experiment yourself with other target platforms/languages.
 
@@ -142,7 +142,7 @@ No, pix2code is experimental and won't work for your specific use cases.
 
 ### How is the model performance measured?
 The accuracy/error reported in the paper is measured at the DSL level by comparing each generated token with each expected token.
-Any difference in length between the generated token sequence and the expected token sequence is also counted as error.
+Any difference in length between the generated token sequence and the expected token sequence is also counted as an error.
 
 ### How long does it take to train the model?
 On a Nvidia Tesla K80 GPU, it takes a little less than 5 hours to optimize the 109 * 10^6 parameters for one dataset; so expect around 15 hours if you want to train the model for the three target platforms.
@@ -152,7 +152,7 @@ On a Nvidia Tesla K80 GPU, it takes a little less than 5 hours to optimize the 1
 
 **TL;DR** Not anytime soon will AI replace front-end developers.
 
-Even assuming a mature version of pix2code able to generate GUI code with 100% accuracy for every platforms/languages in the universe, front-enders will still be needed to implement the logic, the interactive parts, the advanced graphics and animations, and all the features users love. The product we are building at [Uizard Technologies](https://uizard.io) is intended to bridge the gap between UI/UX designers and front-end developers, not replace any of them. We want to rethink the traditional workflow that too often results in more frustration than innovation. We want designers to be as creative as possible to better serve end users, and developers to dedicate their time programming the core functionality and forget about repetitive tasks such as UI implementation. We believe in a future where AI collaborate with humans, not replace humans.
+Even assuming a mature version of pix2code able to generate GUI code with 100% accuracy for every platform/language in the universe, front-enders will still be needed to implement the logic, the interactive parts, the advanced graphics and animations, and all the features users love. The product we are building at [Uizard Technologies](https://uizard.io) is intended to bridge the gap between UI/UX designers and front-end developers, not replace any of them. We want to rethink the traditional workflow that too often results in more frustration than innovation. We want designers to be as creative as possible to better serve end users, and developers to dedicate their time to programming the core functionality and forget about repetitive tasks such as UI implementation. We believe in a future where AI collaborates with humans, not replace humans.
 
 ## Media coverage
 
