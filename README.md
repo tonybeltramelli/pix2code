@@ -2,6 +2,7 @@
 *Generating Code from a Graphical User Interface Screenshot*
 
 [![License](http://img.shields.io/badge/license-APACHE2-blue.svg)](LICENSE.txt)
+[![kandi Featured](https://kandi.openweaver.com/badges/featured.svg)](https://kandi.openweaver.com/python/tonybeltramelli/pix2code)
 
 * A video demo of the system can be seen [here](https://youtu.be/pqKeXkhFA3I)
 * The paper is available at [https://arxiv.org/abs/1705.07962](https://arxiv.org/abs/1705.07962)
