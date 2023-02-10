@@ -19,7 +19,7 @@ if len(argv) < 1:
 else:
     input_path = argv[0]
 
-distribution = 6 if len(argv) < 2 else argv[1]
+distribution = 5
 
 TRAINING_SET_NAME = "training_set"
 EVALUATION_SET_NAME = "eval_set"
