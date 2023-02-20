@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
-from keras.layers import Input, Dense, Dropout, \
+from tensorflow.keras.layers import Input, Dense, Dropout, \
                          RepeatVector, LSTM, concatenate, \
                          Conv2D, MaxPooling2D, Flatten
-from keras.models import Sequential, Model
-from keras.optimizers import RMSprop
-from keras import *
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras import *
 from .Config import *
 from .AModel import *
 
