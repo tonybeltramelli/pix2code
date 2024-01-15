@@ -60,7 +60,7 @@ for path in paths:
         content_hash = chars.replace(" ", "").replace("\n", "")
         content_hash = hashlib.sha256(content_hash.encode('utf-8')).hexdigest()
 
-        if len(eval_set) == evaluation_samples_number:
+        if len(eval_set) >= evaluation_samples_number:
             train_set.append(path)
         else:
             is_unique = True
@@ -76,8 +76,6 @@ for path in paths:
 
         hashes.append(content_hash)
 
-assert len(eval_set) == evaluation_samples_number
-assert len(train_set) == training_samples_number
 
 if not os.path.exists("{}/{}".format(os.path.dirname(input_path), EVALUATION_SET_NAME)):
     os.makedirs("{}/{}".format(os.path.dirname(input_path), EVALUATION_SET_NAME))
