@@ -33,7 +33,7 @@ Both the source code and the datasets are provided to foster future research in 
 ## Setup
 ### Prerequisites
 
-- Python 2 or 3
+- Python 3.11.x
 - pip
 
 ### Install dependencies

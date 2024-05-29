@@ -65,7 +65,7 @@ class Generator:
 
                         if verbose:
                             print("Yield batch")
-                        yield ([batch_input_images, batch_partial_sequences], batch_next_words)
+                        yield ((batch_input_images, batch_partial_sequences), batch_next_words)
 
                         batch_input_images = []
                         batch_partial_sequences = []
